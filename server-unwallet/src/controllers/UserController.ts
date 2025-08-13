@@ -388,7 +388,7 @@ export class UserController {
       });
 
       // RPC URL for Base Sepolia
-      const RPC_URL = 'https://base-sepolia-rpc.publicnode.com';
+      const RPC_URL = "https://rpc-holesky.morphl2.io";
 
       // Create sponsor account and clients
       const sponsorAccount = privateKeyToAccount(formattedPrivateKey as `0x${string}`);
