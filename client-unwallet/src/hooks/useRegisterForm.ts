@@ -8,7 +8,7 @@ import {
 import { useAccount, useWalletClient } from "wagmi";
 import { secp256k1 } from "ethereum-cryptography/secp256k1";
 import axios from "axios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, getCurrentNetwork, STEALTH_ADDRESS_GENERATION_MESSAGE } from "@/lib/constants";
 
 interface FormData {
   username: string;
@@ -102,7 +102,7 @@ export const useRegisterForm = () => {
         : formData;
 
       console.log("formData", currentFormData);
-      const message = "STEALTH_ADDRESS_GENERATION_BASE_SEPOLIAA";
+      const message = STEALTH_ADDRESS_GENERATION_MESSAGE;
 
       const signature = await walletClient?.signMessage({
         message: message,
@@ -195,9 +195,7 @@ export const useRegisterForm = () => {
 
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  const currentNetwork = WHITELISTED_NETWORKS.find(
-    (network) => network.name === "Base Sepolia"
-  );
+  const currentNetwork = getCurrentNetwork(WHITELISTED_NETWORKS);
   const tokens = currentNetwork?.tokens || [];
 
   // Validation functions

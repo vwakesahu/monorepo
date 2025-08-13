@@ -1,6 +1,10 @@
 import { Chain, http } from "viem";
 import { Network } from "@/hooks/useNetworks";
 
+export const NETWORK_CONFIG = {
+  DEFAULT_NETWORK_NAME: "Morph Holesky",
+} as const;
+
 // Chain ID constants - only Morph Holesky
 export const CHAIN_IDS = {
   MORPH_HOLESKY: 2810,
@@ -9,14 +13,17 @@ export const CHAIN_IDS = {
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 // export const BACKEND_URL = "https://stealth-lemon.vercel.app";
 
+export const STEALTH_ADDRESS_GENERATION_MESSAGE =
+  "STEALTH_ADDRESS_GENERATION_MORPH_HOLESKY";
+
 export const WHITELISTED_NETWORKS = [
   {
     name: "Morph Holesky",
     chainId: CHAIN_IDS.MORPH_HOLESKY,
     network: "Morph Holesky",
-    explorerUrl: "https://rpc-holesky.morphl2.io",
+    explorerUrl: "https://explorer-holesky.morphl2.io",
     logo: "/morph-logo.svg",
-    rpcUrl: "https://rpc-holesky.morphl2.io",   
+    rpcUrl: "https://rpc-holesky.morphl2.io",
     nativeCurrency: {
       name: "Ethereum",
       symbol: "ETH",
@@ -30,11 +37,11 @@ export const WHITELISTED_NETWORKS = [
       {
         symbol: "USDC",
         name: "USD Coin",
-        address: "0x643f9a385353022ED8c0d9490F451aEE9238EDD8",
+        address: "0x4ddBE2281d190536C68DA0708153d4f757879ABa",
       },
     ],
     testnet: true,
-  }
+  },
 ];
 
 // Transform function to convert WHITELISTED_NETWORKS to Privy Chain format
@@ -126,6 +133,16 @@ export const MULTICALL3_ABI = [
     type: "function",
   },
 ];
+
+// Utility function to get the current network from a list of networks
+export const getCurrentNetwork = (
+  networks: Network[] | undefined
+): Network | undefined => {
+  if (!networks) return undefined;
+  return networks.find(
+    (network) => network.name === NETWORK_CONFIG.DEFAULT_NETWORK_NAME
+  );
+};
 
 export const SAFE_ABI = [
   {

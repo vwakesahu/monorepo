@@ -5,16 +5,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import axios from "axios";
-import { useNetworks } from "@/hooks/useNetworks";
+import { useCurrentNetwork } from "@/hooks/useNetworks";
 import { BACKEND_URL } from "@/lib/constants";
 
 const ProductBuyPage = () => {
   const [selectedPayment, setSelectedPayment] = useState("USDC");
   const [isProcessing, setIsProcessing] = useState(false);
-  const { data: networks } = useNetworks();
-  const seiNetwork = networks?.data.find(
-    (network) => network.name === "Sei Testnet"
-  );
+  const { currentNetwork } = useCurrentNetwork();
   const { username } = useParams();
 
   const paymentOptions = [
@@ -58,8 +55,8 @@ const ProductBuyPage = () => {
       );
 
       const stealthRequest = {
-        chainId: seiNetwork?.chainId,
-        tokenAddress: seiNetwork?.tokens[0].address,
+        chainId: currentNetwork?.chainId,
+        tokenAddress: currentNetwork?.tokens[0].address,
         tokenAmount: (50 + i * 5).toString(),
       };
 
@@ -112,8 +109,8 @@ const ProductBuyPage = () => {
     console.log({ stealthAddresses, safeAddresses, stealthResponsesData });
 
     // const tx = await writeContractAsync({
-    //   address: seiNetwork?.tokens[0].address,
-    //   abi: seiNetwork?.tokens[0].abi,
+    //   address: currentNetwork?.tokens[0].address,
+    //   abi: currentNetwork?.tokens[0].abi,
     //   functionName: "transfer",
     //   args: [safeAddresses[0], 1000000000000000000],
     // });

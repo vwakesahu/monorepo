@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { getCurrentNetwork } from "@/lib/constants";
 
 export interface Network {
   name: string;
@@ -44,4 +45,16 @@ export const useNetworks = () => {
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
+};
+
+// Hook to get the current network based on configuration
+export const useCurrentNetwork = () => {
+  const { data: networks, isLoading, error } = useNetworks();
+  const currentNetwork = getCurrentNetwork(networks?.data);
+
+  return {
+    currentNetwork,
+    isLoading,
+    error,
+  };
 };

@@ -12,7 +12,7 @@ import {
 // import { useRouter } from "next/navigation";
 
 import { useNetworks } from "@/hooks/useNetworks";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, getCurrentNetwork } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -44,9 +44,7 @@ const Page = () => {
   const [paymentStatus, setPaymentStatus] = useState<string>("pending");
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const currentNetwork = networks?.data.find(
-    (network) => network.name === "Base Sepolia"
-  );
+  const currentNetwork = getCurrentNetwork(networks?.data);
 
   const getStealthAddress = async (tokenAddress: string) => {
     const stealthAddresses: string[] = [];
@@ -376,7 +374,7 @@ const Page = () => {
               <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Network selection is currently locked to Base Sepolia
+              Network selection is currently locked to {currentNetwork?.name}
             </p>
           </div>
 

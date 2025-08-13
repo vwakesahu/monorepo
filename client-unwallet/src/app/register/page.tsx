@@ -10,7 +10,6 @@ import Image from "next/image";
 import { SITE } from "@/lib/constants";
 // import { AuthGuard } from "@/components/auth-guard";
 // import axios from "axios";
-// import { registrationResponse } from "@/lib/utils";
 
 const RegisterPage = () => {
   const {
