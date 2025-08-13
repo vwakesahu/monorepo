@@ -367,8 +367,8 @@ export class UserController {
 
       // Import required dependencies
       const { createWalletClient, createPublicClient, http, encodeFunctionData } = require('viem');
-      const { baseSepolia } = require('viem/chains');
       const { privateKeyToAccount } = require('viem/accounts');
+      const { MORPH_HOLESKY } = require('../config/chains');
 
       // Your sponsor private key (make sure this is in your .env file)
       const SPONSOR_PRIVATE_KEY = process.env.SPONSOR_PRIVATE_KEY;
@@ -394,12 +394,12 @@ export class UserController {
       const sponsorAccount = privateKeyToAccount(formattedPrivateKey as `0x${string}`);
       const sponsorWallet = createWalletClient({
         account: sponsorAccount,
-        chain: baseSepolia,
+        chain: MORPH_HOLESKY,
         transport: http(RPC_URL),
       });
 
       const publicClient = createPublicClient({
-        chain: baseSepolia,
+        chain: MORPH_HOLESKY,
         transport: http(RPC_URL),
       });
 
@@ -489,9 +489,9 @@ export class UserController {
         sponsorAddress: sponsorAccount.address,
         message: 'Gas sponsorship executed successfully',
         executionDetails: {
-          chainId: baseSepolia.id,
-          chainName: baseSepolia.name,
-          explorerUrl: `https://sepolia.basescan.org/tx/${txHash}`,
+          chainId: MORPH_HOLESKY.id,
+          chainName: MORPH_HOLESKY.name,
+          explorerUrl: `https://explorer-holesky.morphl2.io/tx/${txHash}`,
           multicallCallsExecuted: multicallData.length,
           status: receipt.status === 'success' ? 'success' : 'failed'
         }
