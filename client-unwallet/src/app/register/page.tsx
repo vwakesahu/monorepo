@@ -127,30 +127,29 @@ const RegisterPage = () => {
             </div>
 
             {/* Action Buttons */}
+            <Link href={`/${registrationResult.data.user.username}/qrcode`}>
+              <Button className="w-full">
+                Generate Payment QR Code
+                <ArrowRight size={16} className="ml-2" />
+              </Button>
+            </Link>
             <div className="space-y-2">
-              {isMerchant ? (
+              {isMerchant && (
                 <Link href="/merchant/dashboard">
-                  <Button className="w-full">
+                  <Button className="w-full" variant="outline">
                     Access Merchant Dashboard
-                    <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                </Link>
-              ) : (
-                <Link href={`/${registrationResult.data.user.username}/qrcode`}>
-                  <Button className="w-full">
-                    Generate Payment QR Code
                     <ArrowRight size={16} className="ml-2" />
                   </Button>
                 </Link>
               )}
 
-              <Button
+              {/* <Button
                 variant="outline"
                 className="w-full"
                 onClick={() => setRegistrationResult(null)}
               >
                 Register Another Wallet
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -159,24 +158,23 @@ const RegisterPage = () => {
   }
 
   return (
-
-      <div className="min-h-screen bg-background flex items-center justify-center p-6">
-        <div className="w-full max-w-md">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <TextGif
-              gifUrl={gifUrls[0]}
-              text={SITE.name}
-              size="lg"
-              weight="bold"
-            />
-            <p className="text-sm text-muted-foreground mt-2">
-              Create your wallet account
-            </p>
-            <Link href="/" className="text-sm text-primary mt-2 block">
-              ← Back to home
-            </Link>
-          </div>
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <TextGif
+            gifUrl={gifUrls[0]}
+            text={SITE.name}
+            size="lg"
+            weight="bold"
+          />
+          <p className="text-sm text-muted-foreground mt-2">
+            Create your wallet account
+          </p>
+          <Link href="/" className="text-sm text-primary mt-2 block">
+            ← Back to home
+          </Link>
+        </div>
 
         {/* Form */}
         <div className="space-y-6">
@@ -414,7 +412,6 @@ const RegisterPage = () => {
         </div>
       </div>
     </div>
-
   );
 };
 
