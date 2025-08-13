@@ -1,4 +1,4 @@
-export const MultiCall3_ContractAddress = "0x40E81E7748323C92382C97f050E5C7975DBdea18";
+export const MultiCall3_ContractAddress = "0xcA11bde05977b3631167028862bE2a173976CA11";
 
 export const MultiCall3_ABI = [
 	{
