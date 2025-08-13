@@ -35,9 +35,9 @@ export const WHITELISTED_NETWORKS = [
     },
     tokens: [
       {
-        symbol: "USDC",
-        name: "USD Coin",
-        address: "0x4ddBE2281d190536C68DA0708153d4f757879ABa",
+        symbol: "USDT",
+        name: "Tether",
+        address: "0x9E12AD42c4E4d2acFBADE01a96446e48e6764B98",
       },
     ],
     testnet: true,
@@ -99,7 +99,7 @@ export const getViemTransports = (networks: Network[]) => {
 
 export const SITE = {
   name: "Unwallet",
-  description: "Make money fluid",
+  description: "One wallet for payments on any chain.",
   logo: "/logo.svg",
 };
 

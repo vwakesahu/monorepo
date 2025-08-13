@@ -10,6 +10,7 @@ import {
   ChevronDown,
   LogOut,
   Settings,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TextGif, gifUrls } from "@/components/ui/text-gif";
@@ -460,7 +461,7 @@ const PaymentRedemptionUI = () => {
       const txHash = result.data?.transactionHash || "pending";
       const explorerUrl =
         result.data?.executionDetails?.explorerUrl ||
-        `https://sepolia.basescan.org/tx/${txHash}`;
+        `${currentNetwork?.blockExplorer.url}/tx/${txHash}`;
 
       return {
         success: true,
@@ -566,7 +567,7 @@ const PaymentRedemptionUI = () => {
       );
 
       // Create USDC transfer transaction (same as before)
-      console.log("💸 Creating USDC transfer transaction from Safe...");
+      console.log("💸 Creating USDT transfer transaction from Safe...");
 
       // Create wallet client with spending private key
       const spendingWalletClient = createWalletClient({
@@ -676,7 +677,7 @@ const PaymentRedemptionUI = () => {
       console.log("✅ Gas sponsored transaction completed successfully!");
 
       // Verify the transfer worked (enhanced with sponsorship details)
-      console.log("🔍 Verifying USDC transfer results...");
+      console.log("🔍 Verifying USDT transfer results...");
 
       // Check recipient balance
       const recipientBalanceData = encodeFunctionData({
@@ -962,6 +963,14 @@ const PaymentRedemptionUI = () => {
           </p>
         </div>
 
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => router.push("/")}>
+              <ChevronLeft /> Back to home
+            </Button>
+          </div>
+        </div>
+
         {/* User Info */}
         <div className="mb-4 flex justify-between">
           <div></div>
@@ -1140,7 +1149,7 @@ const PaymentRedemptionUI = () => {
                               From: {payment.address.slice(0, 6)}...
                               {payment.address.slice(-4)}
                               <a
-                                href={`https://sepolia.basescan.org/address/${payment.address}`}
+                                href={`${currentNetwork?.blockExplorer.url}/address/${payment.address}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="ml-2 text-primary hover:text-primary/80 inline-flex items-center gap-1"
@@ -1153,7 +1162,7 @@ const PaymentRedemptionUI = () => {
                                   TX: {payment.transactionHash.slice(0, 8)}...
                                   {payment.transactionHash.slice(-6)}
                                   <a
-                                    href={`https://sepolia.basescan.org/tx/${payment.transactionHash}`}
+                                    href={`${currentNetwork?.blockExplorer.url}/tx/${payment.transactionHash}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="ml-2 text-primary hover:text-primary/80 inline-flex items-center gap-1"

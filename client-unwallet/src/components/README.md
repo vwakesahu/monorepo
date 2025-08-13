@@ -70,7 +70,6 @@ document.addEventListener("noname-payment-success", (event) => {
 - **📱 Responsive Design**: Works on desktop and mobile
 - **🔒 Secure**: Uses stealth addresses for privacy
 - **⚡ Fast Setup**: Copy-paste integration in 5 minutes
-- **🌐 Multi-Token**: Support USDC, USDT, and more
 - **📊 Event Driven**: Easy backend integration
 
 ## 📋 Configuration Options
@@ -94,8 +93,8 @@ const widget = new NoNamePaymentWidget({
   // Tokens
   supportedTokens: [
     {
-      symbol: "USDC",
-      name: "USD Coin",
+      symbol: "USDT",
+      name: "T",
       chainId: 1328,
       tokenAddress: "0x...",
     },

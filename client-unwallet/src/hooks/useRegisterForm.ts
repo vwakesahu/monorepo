@@ -22,7 +22,7 @@ const SELECTED_TOKENS_KEY = "register_selected_tokens";
 export const useRegisterForm = () => {
   const { data: networks } = useNetworks();
   const WHITELISTED_NETWORKS = networks?.data || [];
-  const [selectedTokens, setSelectedTokens] = useState(["USDC"]);
+  const [selectedTokens, setSelectedTokens] = useState(["USDT"]);
   const [registrationResult, setRegistrationResult] = useState<{
     success: boolean;
     data: {
@@ -89,7 +89,7 @@ export const useRegisterForm = () => {
       websiteUri: "",
       walletType: "personal",
     });
-    setSelectedTokens(["USDC"]);
+    setSelectedTokens(["USDT"]);
   };
 
   const { login } = useLogin({

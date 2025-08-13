@@ -37,7 +37,7 @@ const MerchantDashboard = () => {
   const [revenueData] = useState([
     {
       address: "0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6",
-      token: "USDC",
+      token: "USDT",
       chain: "Morph Holesky",
       amount: "150.00",
       txhash:
@@ -53,7 +53,7 @@ const MerchantDashboard = () => {
     },
     {
       address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
-      token: "USDC",
+      token: "USDT",
       chain: "Morph Holesky",
       amount: "299.99",
       txhash:
