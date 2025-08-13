@@ -7,9 +7,11 @@ import {
   Copy,
   ChevronDown,
   ChevronsUpDown,
+  Home,
+  ChevronLeft,
   // ExternalLink,
 } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useNetworks } from "@/hooks/useNetworks";
 import { BACKEND_URL, getCurrentNetwork } from "@/lib/constants";
@@ -30,7 +32,7 @@ import {
 const Page = () => {
   const { username } = useParams();
   const { data: networks } = useNetworks();
-  // const router = useRouter();
+  const router = useRouter();
   const [selectedToken, setSelectedToken] = useState<string>("");
   const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -600,13 +602,21 @@ const Page = () => {
         </div>
 
         {/* Back Button */}
-        <div className="text-center mt-6">
-          <button
+        <div className="text-center mt-6 flex items-center justify-between gap-2">
+        <button
             onClick={() => setShowQRCode(false)}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← Back to setup
+            <ChevronLeft /> Back to setup
+          </button>  <button
+            onClick={() =>  router.push("/")}
+            className="text-sm flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Home /> Go to home
           </button>
+         
+
+          
         </div>
 
         {/* Footer */}

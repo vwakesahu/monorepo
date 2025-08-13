@@ -6,10 +6,24 @@ import {
   ExternalLink,
   DollarSign,
   AlertTriangle,
+  User,
+  ChevronDown,
+  LogOut,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TextGif, gifUrls } from "@/components/ui/text-gif";
-import { BACKEND_URL, getViemChains, SITE, STEALTH_ADDRESS_GENERATION_MESSAGE } from "@/lib/constants";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  BACKEND_URL,
+  getViemChains,
+  SITE,
+  STEALTH_ADDRESS_GENERATION_MESSAGE,
+} from "@/lib/constants";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +34,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { useNetworks } from "@/hooks/useNetworks";
 
@@ -154,11 +168,12 @@ const PaymentRedemptionUI = () => {
   const [isLoadingBalances, setIsLoadingBalances] = useState(false);
 
   const { username } = useParams();
+  const router = useRouter();
   const { signMessageAsync } = useSignMessage();
   const { data: walletClient } = useWalletClient();
-  const { logout } = usePrivy();
+  const { logout, user } = usePrivy();
   const { data: networks } = useNetworks();
-  
+
   // Get the first network (Morph Holesky) as default
   const currentNetwork = networks?.data?.[0];
   const viemChains = getViemChains(networks?.data || []);
@@ -385,7 +400,6 @@ const PaymentRedemptionUI = () => {
     return processedKeys;
   };
 
-
   const executeTransactionWithGasSponsorship = async (
     multicallData: any[],
     metadata: any = {}
@@ -463,7 +477,8 @@ const PaymentRedemptionUI = () => {
         },
         sponsorDetails: {
           sponsorAddress: result.data?.sponsorAddress || "Unknown",
-          chainName: result.data?.executionDetails?.chainName || currentNetwork?.name,
+          chainName:
+            result.data?.executionDetails?.chainName || currentNetwork?.name,
         },
       };
     } catch (error) {
@@ -518,7 +533,10 @@ const PaymentRedemptionUI = () => {
       console.log("🔐 Stealth address derived:", stealthAddress);
 
       // Predict Safe address (same as before)
-      const predictedSafeAddress = await predictSafeAddress(stealthAddress, currentNetwork?.rpcUrl);
+      const predictedSafeAddress = await predictSafeAddress(
+        stealthAddress,
+        currentNetwork?.rpcUrl
+      );
       console.log("🏦 Predicted Safe address:", predictedSafeAddress);
 
       const predictedSafe = {
@@ -530,18 +548,18 @@ const PaymentRedemptionUI = () => {
           saltNonce: "0",
         },
       };
-  
+
       const RPC_URL = currentNetwork?.rpcUrl;
-  
+
       const protocolKit = await Safe.init({
         provider: RPC_URL as string,
         signer: stealthAddress,
         predictedSafe,
       });
-  
+
       const deploymentTransaction =
         await protocolKit.createSafeDeploymentTransaction();
-  
+
       console.log(
         "✅ Safe deployment transaction created",
         deploymentTransaction
@@ -550,12 +568,12 @@ const PaymentRedemptionUI = () => {
       // Create USDC transfer transaction (same as before)
       console.log("💸 Creating USDC transfer transaction from Safe...");
 
-    // Create wallet client with spending private key
-    const spendingWalletClient = createWalletClient({
-      account: privateKeyToAccount(spendingPrivateKey as `0x${string}`),
-      chain: currentChain,
-      transport: http(RPC_URL)
-    });
+      // Create wallet client with spending private key
+      const spendingWalletClient = createWalletClient({
+        account: privateKeyToAccount(spendingPrivateKey as `0x${string}`),
+        chain: currentChain,
+        transport: http(RPC_URL),
+      });
 
       // Encode USDC transfer function data
       const transferData = encodeFunctionData({
@@ -749,6 +767,15 @@ const PaymentRedemptionUI = () => {
     setAddressError("");
   };
 
+  const handleNavigateToMerchantDashboard = () => {
+    router.push("/merchant/dashboard");
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
   // Create viem client for the current network
   const publicClient = createPublicClient({
     chain: currentChain,
@@ -930,11 +957,46 @@ const PaymentRedemptionUI = () => {
             />
           </div>
           <p className="text-sm text-muted-foreground">
-            Withdraw your payments directly to your EOA on {currentNetwork?.name || "Morph Holesky"}
+            Withdraw your payments directly to your EOA on{" "}
+            {currentNetwork?.name || "Morph Holesky"}
           </p>
         </div>
 
         {/* User Info */}
+        <div className="mb-4 flex justify-between">
+          <div></div>
+          {user && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="lg">
+                  <User size={16} />
+                  {user?.wallet?.address?.slice(0, 6)}...
+                  {user?.wallet?.address?.slice(-4)}
+                  <ChevronDown size={16} />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-0" align="end">
+                <div className="">
+
+                  <button
+                    onClick={handleNavigateToMerchantDashboard}
+                    className="w-full px-4 py-4 flex border-b items-center gap-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors"
+                  >
+                    <Settings size={16} />
+                     Dashboard
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-4 py-4 flex items-center gap-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors"
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
+        </div>
         <div className="bg-card  p-4 mb-6 border">
           <div className="flex items-center justify-between">
             <div>
