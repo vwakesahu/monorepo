@@ -307,8 +307,8 @@ class UserController {
                 }
                 // Import required dependencies
                 const { createWalletClient, createPublicClient, http, encodeFunctionData } = require('viem');
-                const { baseSepolia } = require('viem/chains');
                 const { privateKeyToAccount } = require('viem/accounts');
+                const { MORPH_HOLESKY } = require('../config/chains');
                 // Your sponsor private key (make sure this is in your .env file)
                 const SPONSOR_PRIVATE_KEY = process.env.SPONSOR_PRIVATE_KEY;
                 if (!SPONSOR_PRIVATE_KEY) {
@@ -323,17 +323,17 @@ class UserController {
                     keyLength: SPONSOR_PRIVATE_KEY.length,
                     startsWithOx: SPONSOR_PRIVATE_KEY.startsWith('0x')
                 });
-                // RPC URL for Base Sepolia
-                const RPC_URL = 'https://base-sepolia-rpc.publicnode.com';
+                // RPC URL for Morph Holesky
+                const RPC_URL = "https://rpc-holesky.morphl2.io";
                 // Create sponsor account and clients
                 const sponsorAccount = privateKeyToAccount(formattedPrivateKey);
                 const sponsorWallet = createWalletClient({
                     account: sponsorAccount,
-                    chain: baseSepolia,
+                    chain: MORPH_HOLESKY,
                     transport: http(RPC_URL),
                 });
                 const publicClient = createPublicClient({
-                    chain: baseSepolia,
+                    chain: MORPH_HOLESKY,
                     transport: http(RPC_URL),
                 });
                 utils_1.Logger.info('Executing gas sponsored transaction with multicall', {
@@ -414,9 +414,9 @@ class UserController {
                     sponsorAddress: sponsorAccount.address,
                     message: 'Gas sponsorship executed successfully',
                     executionDetails: {
-                        chainId: baseSepolia.id,
-                        chainName: baseSepolia.name,
-                        explorerUrl: `https://sepolia.basescan.org/tx/${txHash}`,
+                        chainId: MORPH_HOLESKY.id,
+                        chainName: MORPH_HOLESKY.name,
+                        explorerUrl: `https://explorer-holesky.morphl2.io/tx/${txHash}`,
                         multicallCallsExecuted: multicallData.length,
                         status: receipt.status === 'success' ? 'success' : 'failed'
                     }

@@ -387,7 +387,7 @@ export class UserController {
         startsWithOx: SPONSOR_PRIVATE_KEY.startsWith('0x')
       });
 
-      // RPC URL for Base Sepolia
+      // RPC URL for Morph Holesky
       const RPC_URL = "https://rpc-holesky.morphl2.io";
 
       // Create sponsor account and clients

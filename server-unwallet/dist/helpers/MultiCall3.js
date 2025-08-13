@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultiCall3_ABI = exports.MultiCall3_ContractAddress = void 0;
-exports.MultiCall3_ContractAddress = "0x40E81E7748323C92382C97f050E5C7975DBdea18";
+exports.MultiCall3_ContractAddress = "0xcA11bde05977b3631167028862bE2a173976CA11";
 exports.MultiCall3_ABI = [
     {
         "inputs": [
