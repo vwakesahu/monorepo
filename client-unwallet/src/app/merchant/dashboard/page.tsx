@@ -33,6 +33,8 @@ const MerchantDashboard = () => {
   const [userUsername, setUserUsername] = useState<string | null>(null);
   const [isLoadingUsername, setIsLoadingUsername] = useState(true);
 
+  const { exportWallet } = usePrivy();
+
   // Mock revenue data - in a real app, this would come from your backend
   const [revenueData] = useState([
     {
@@ -217,9 +219,7 @@ document.addEventListener('noname-payment-success', (event) => {
                 <ChevronLeft className="w-4 h-4" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                Unwallet
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">Unwallet</h1>
                 {!authenticated && (
                   <p className="text-sm text-red-600 mt-2">
                     Please log in to access your merchant dashboard
@@ -311,6 +311,53 @@ document.addEventListener('noname-payment-success', (event) => {
                       Test
                     </Button>
                   </div>
+                </div>
+
+                {/* Your Wallet Address */}
+                <div className="bg-white rounded-lg shadow-sm border p-6">
+                  <h3 className="font-semibold text-gray-900 mb-3">
+                    Your Wallet Address
+                  </h3>
+                  <div className="bg-gray-50 rounded-lg p-3 mb-3">
+                    <code className="text-sm text-gray-700 break-all">
+                      {address ?? "No wallet connected"}
+                    </code>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() =>
+                      address && copyToClipboard(address, "wallet")
+                    }
+                    disabled={!address}
+                    className="flex items-center gap-1"
+                  >
+                    {isCopied === "wallet" ? (
+                      <Check className="w-3 h-3" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                    {isCopied === "wallet" ? "Copied!" : "Copy"}
+                  </Button>
+                </div>
+
+                {/* Export Wallet */}
+                <div className="bg-white rounded-lg shadow-sm border p-6">
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <Home className="w-4 h-4" />
+                    Export Wallet
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Export your wallet data for backup or migration purposes
+                  </p>
+                  <Button
+                    onClick={exportWallet}
+                    disabled={!authenticated}
+                    className="w-full"
+                    variant="outline"
+                  >
+                    Export my wallet
+                  </Button>
                 </div>
 
                 {/* API Key */}
