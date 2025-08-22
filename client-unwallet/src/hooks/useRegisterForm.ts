@@ -22,7 +22,7 @@ const SELECTED_TOKENS_KEY = "register_selected_tokens";
 export const useRegisterForm = () => {
   const { data: networks } = useNetworks();
   const WHITELISTED_NETWORKS = networks?.data || [];
-  const [selectedTokens, setSelectedTokens] = useState(["USDT"]);
+  const [selectedTokens, setSelectedTokens] = useState(["USDC"]);
   const [registrationResult, setRegistrationResult] = useState<{
     success: boolean;
     data: {

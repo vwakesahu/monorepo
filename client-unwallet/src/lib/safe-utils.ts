@@ -1,17 +1,18 @@
 import { createPublicClient, http } from "viem";
 import Safe from "@safe-global/protocol-kit";
 import { CHAIN_IDS } from "./constants";
+import { getContractNetworks } from "./safe-contracts";
 
 // Create public client for reading blockchain data
 export const publicClient = createPublicClient({
-  chain: { 
-    id: CHAIN_IDS.MORPH_HOLESKY, 
-    name: 'Morph Holesky',
-    nativeCurrency: { name: 'Ethereum', symbol: 'ETH', decimals: 18 },
-    rpcUrls: { default: { http: ['https://rpc-holesky.morphl2.io'] } },
-    testnet: true
+  chain: {
+    id: CHAIN_IDS.SEI_TESTNET,
+    name: "Sei Testnet",
+    nativeCurrency: { name: "SEI", symbol: "SEI", decimals: 18 },
+    rpcUrls: { default: { http: ["https://sei-testnet.drpc.org"] } },
+    testnet: true,
   },
-  transport: http("https://rpc-holesky.morphl2.io"),
+  transport: http("https://sei-testnet.drpc.org"),
 });
 
 // Helper function to build Safe transaction
@@ -67,7 +68,7 @@ export const safeSignTypedData = async (
     refundReceiver: string;
     nonce: number;
   },
-  chainId: number = CHAIN_IDS.MORPH_HOLESKY
+  chainId: number = CHAIN_IDS.SEI_TESTNET
 ) => {
   const domain = {
     chainId: chainId,
@@ -112,11 +113,17 @@ export const safeSignTypedData = async (
 };
 
 // Predict safe address based on stealth address
-export async function predictSafeAddress(stealthAddress: string, rpcUrl: string = "https://rpc-holesky.morphl2.io") {
+export async function predictSafeAddress(
+  stealthAddress: string,
+  rpcUrl: string = "https://sei-testnet.drpc.org"
+) {
   try {
-    console.log("🔍 Predicting Safe address using Protocol Kit for:", stealthAddress);
+    console.log(
+      "🔍 Predicting Safe address using Protocol Kit for:",
+      stealthAddress
+    );
 
-    // Use Safe Protocol Kit's built-in prediction - no manual contract addresses needed
+    // Use Safe Protocol Kit's built-in prediction with custom contract addresses for Sei Testnet
     const predictedSafe = {
       safeAccountConfig: {
         owners: [stealthAddress],
@@ -127,15 +134,24 @@ export async function predictSafeAddress(stealthAddress: string, rpcUrl: string 
       },
     };
 
-    // Safe Protocol Kit automatically handles all contract addresses for the specified network
+    // Get custom contract networks configuration for Sei Testnet
+    const contractNetworks = getContractNetworks(CHAIN_IDS.SEI_TESTNET);
+
+    console.log(
+      "🔧 Using custom contract networks for Sei Testnet:",
+      contractNetworks
+    );
+
+    // Safe Protocol Kit with custom contract addresses for Sei Testnet
     const protocolKit = await Safe.init({
       provider: rpcUrl,
       predictedSafe,
+      contractNetworks,
     });
 
     const predictedAddress = await protocolKit.getAddress();
     console.log("✅ Safe address predicted successfully:", predictedAddress);
-    
+
     return predictedAddress;
   } catch (error) {
     console.error("❌ Error predicting safe address:", error);

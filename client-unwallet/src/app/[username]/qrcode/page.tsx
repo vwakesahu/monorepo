@@ -56,8 +56,9 @@ const Page = () => {
     // Use the username parameter from URL
     const usernameStr = username as string;
 
-    // Debug: Log the credentials
+    // Debug: Log the credentials and backend URL
     console.log("🔐 API Request Info:", { username: usernameStr });
+    console.log("🌐 Backend URL:", BACKEND_URL);
 
     // No authentication headers needed for stealth generation (public endpoint)
     const headers = {
@@ -101,6 +102,14 @@ const Page = () => {
         if (!stealthResponse.ok) {
           const errorText = await stealthResponse.text();
           console.error("❌ HTTP Error Response:", errorText);
+
+          // Check if the response is HTML (likely an error page)
+          if (errorText.includes("<!DOCTYPE") || errorText.includes("<html")) {
+            throw new Error(
+              `Backend server error (${stealthResponse.status}): Received HTML instead of JSON. Please check if the backend server is running correctly.`
+            );
+          }
+
           throw new Error(`HTTP ${stealthResponse.status}: ${errorText}`);
         }
 
@@ -123,6 +132,14 @@ const Page = () => {
         if (!nonceResponse.ok) {
           const errorText = await nonceResponse.text();
           console.error("❌ Nonce HTTP Error Response:", errorText);
+
+          // Check if the response is HTML (likely an error page)
+          if (errorText.includes("<!DOCTYPE") || errorText.includes("<html")) {
+            throw new Error(
+              `Backend server error (${nonceResponse.status}): Received HTML instead of JSON for nonce request. Please check if the backend server is running correctly.`
+            );
+          }
+
           throw new Error(`Nonce HTTP ${nonceResponse.status}: ${errorText}`);
         }
 
@@ -603,20 +620,18 @@ const Page = () => {
 
         {/* Back Button */}
         <div className="text-center mt-6 flex items-center justify-between gap-2">
-        <button
+          <button
             onClick={() => setShowQRCode(false)}
             className="text-sm flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronLeft /> Back to setup
-          </button>  <button
-            onClick={() =>  router.push("/")}
+          </button>{" "}
+          <button
+            onClick={() => router.push("/")}
             className="text-sm flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Home /> Go to home
           </button>
-         
-
-          
         </div>
 
         {/* Footer */}

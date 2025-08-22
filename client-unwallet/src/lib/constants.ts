@@ -2,46 +2,71 @@ import { Chain, http } from "viem";
 import { Network } from "@/hooks/useNetworks";
 
 export const NETWORK_CONFIG = {
-  DEFAULT_NETWORK_NAME: "Morph Holesky",
+  DEFAULT_NETWORK_NAME: "Sei Testnet",
 } as const;
 
 // Chain ID constants - only Morph Holesky
 export const CHAIN_IDS = {
-  MORPH_HOLESKY: 2810,
+  SEI_TESTNET: 1328,
 } as const;
 
-export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-// export const BACKEND_URL = "https://stealth-lemon.vercel.app";
+export const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://stealth-lemon.vercel.app";
 
 export const STEALTH_ADDRESS_GENERATION_MESSAGE =
-  "STEALTH_ADDRESS_GENERATION_MORPH_HOLESKY";
+  "STEALTH_ADDRESS_GENERATION_ZZZZZ_SEI_TESTNET";
 
 export const WHITELISTED_NETWORKS = [
   {
-    name: "Morph Holesky",
-    chainId: CHAIN_IDS.MORPH_HOLESKY,
-    network: "Morph Holesky",
-    explorerUrl: "https://explorer-holesky.morphl2.io",
-    logo: "/morph-logo.svg",
-    rpcUrl: "https://rpc-holesky.morphl2.io",
+    name: "Sei Testnet",
+    chainId: CHAIN_IDS.SEI_TESTNET,
+    network: "sei-testnet",
+    explorerUrl: "https://seitrace.com",
+    logo: "/sei-logo.svg",
+    rpcUrl: "https://sei-testnet.drpc.org",
     nativeCurrency: {
-      name: "Ethereum",
-      symbol: "ETH",
+      name: "SEI",
+      symbol: "SEI",
       decimals: 18,
     },
     blockExplorer: {
-      name: "morph scan",
-      url: "https://explorer-holesky.morphl2.io/",
+      name: "Sei Explorer",
+      url: "https://seitrace.com/",
     },
     tokens: [
       {
-        symbol: "USDT",
-        name: "Tether",
-        address: "0x4ddBE2281d190536C68DA0708153d4f757879ABa",
+        symbol: "USDC",
+        name: "USDC",
+        address: "0x4fCF1784B31630811181f670Aea7A7bEF803eaED",
       },
     ],
     testnet: true,
   },
+  // {
+  //   name: "Morph Holesky",
+  //   chainId: CHAIN_IDS.MORPH_HOLESKY,
+  //   network: "Morph Holesky",
+  //   explorerUrl: "https://explorer-holesky.morphl2.io",
+  //   logo: "/morph-logo.svg",
+  //   rpcUrl: "https://rpc-holesky.morphl2.io",
+  //   nativeCurrency: {
+  //     name: "Ethereum",
+  //     symbol: "ETH",
+  //     decimals: 18,
+  //   },
+  //   blockExplorer: {
+  //     name: "morph scan",
+  //     url: "https://explorer-holesky.morphl2.io/",
+  //   },
+  //   tokens: [
+  //     {
+  //       symbol: "USDT",
+  //       name: "Tether",
+  //       address: "0x4ddBE2281d190536C68DA0708153d4f757879ABa",
+  //     },
+  //   ],
+  //   testnet: true,
+  // },
 ];
 
 // Transform function to convert WHITELISTED_NETWORKS to Privy Chain format

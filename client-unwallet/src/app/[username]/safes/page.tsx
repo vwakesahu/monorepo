@@ -62,6 +62,7 @@ import {
   predictSafeAddress,
   safeSignTypedData,
 } from "@/lib/safe-utils";
+import { getContractNetworks } from "@/lib/safe-contracts";
 
 const MULTICALL3_ADDRESS = "0xcA11bde05977b3631167028862bE2a173976CA11";
 
@@ -552,10 +553,21 @@ const PaymentRedemptionUI = () => {
 
       const RPC_URL = currentNetwork?.rpcUrl;
 
+      // Get custom contract networks configuration for the current network
+      const contractNetworks = getContractNetworks(
+        currentNetwork?.chainId || 1328
+      );
+
+      console.log("🔧 Using custom contract networks for current network:", {
+        chainId: currentNetwork?.chainId || 1328,
+        contractNetworks,
+      });
+
       const protocolKit = await Safe.init({
         provider: RPC_URL as string,
         signer: stealthAddress,
         predictedSafe,
+        contractNetworks,
       });
 
       const deploymentTransaction =
@@ -965,7 +977,11 @@ const PaymentRedemptionUI = () => {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => router.push("/")}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push("/")}
+            >
               <ChevronLeft /> Back to home
             </Button>
           </div>
@@ -986,13 +1002,12 @@ const PaymentRedemptionUI = () => {
               </PopoverTrigger>
               <PopoverContent className="w-56 p-0" align="end">
                 <div className="">
-
                   <button
                     onClick={handleNavigateToMerchantDashboard}
                     className="w-full px-4 py-4 flex border-b items-center gap-2 text-sm text-foreground hover:bg-accent hover:text-accent-foreground rounded-sm transition-colors"
                   >
                     <Settings size={16} />
-                     Dashboard
+                    Dashboard
                   </button>
                   <button
                     onClick={handleLogout}
